@@ -14,7 +14,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("user") == null) {
+        if (req.getSession() == null
+                || req.getSession().getAttribute("user") == null) {
             req.getRequestDispatcher("login.jsp")
                     .forward(req, resp);
         } else {
@@ -28,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         if (Users.getInstance().getUsers().contains(req.getParameter("login"))
                 && req.getParameter("password") != null
                 && req.getParameter("password").length() > 0) {
-            req.getSession().setAttribute("user", req.getParameter("login"));
+            req.getSession(true).setAttribute("user", req.getParameter("login"));
             req.getRequestDispatcher("user/hello.jsp")
                     .forward(req, resp);
         } else {
