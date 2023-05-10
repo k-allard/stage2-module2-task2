@@ -33,8 +33,7 @@ public class LoginServlet extends HttpServlet {
             req.getRequestDispatcher("user/hello.jsp")
                     .forward(req, resp);
         } else {
-            req.getRequestDispatcher("login.jsp")
-                    .forward(req, resp);
+            req.getRequestDispatcher("login.jsp").forward(req, resp);
         }
     }
 }
