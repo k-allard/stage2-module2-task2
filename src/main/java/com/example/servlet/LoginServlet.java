@@ -7,7 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.IllegalCharsetNameException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -28,8 +30,22 @@ public class LoginServlet extends HttpServlet {
                 && Users.getInstance().getUsers().contains(req.getParameter("login"))
                 && req.getParameter("password") != null
                 && req.getParameter("password").length() > 0) {
-            req.getSession(true).setAttribute("user", req.getParameter("login"));
-            resp.sendRedirect("/user/hello.jsp");
+            HttpSession session;
+            try {
+                session = req.getSession();
+            } catch (NullPointerException e) {
+                throw new RuntimeException("NullPointerException req.getSession() caught");
+            }
+            try {
+                session.setAttribute("user", req.getParameter("login"));
+            } catch (NullPointerException e) {
+                throw new IllegalArgumentException("NullPointerException session.setAttribute() caught");
+            }
+            try {
+                resp.sendRedirect("/user/hello.jsp");
+            } catch (NullPointerException e) {
+                throw new IllegalCharsetNameException("NullPointerException sendRedirect() caught");
+            }
         } else {
             req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
