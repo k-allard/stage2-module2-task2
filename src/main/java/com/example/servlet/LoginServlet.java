@@ -13,14 +13,12 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (req.getSession() == null
                 || req.getSession().getAttribute("user") == null) {
-            req.getRequestDispatcher("login.jsp")
-                    .forward(req, resp);
+            resp.sendRedirect("login.jsp");
         } else {
-            req.getRequestDispatcher("/user/hello.jsp")
-                    .forward(req, resp);
+            resp.sendRedirect("user/hello.jsp");
         }
     }
 
@@ -31,8 +29,7 @@ public class LoginServlet extends HttpServlet {
                 && req.getParameter("password") != null
                 && req.getParameter("password").length() > 0) {
             req.getSession(true).setAttribute("user", req.getParameter("login"));
-            req.getRequestDispatcher("user/hello.jsp")
-                    .forward(req, resp);
+            resp.sendRedirect("user/hello.jsp");
         } else {
             req.getRequestDispatcher("login.jsp").forward(req, resp);
         }
