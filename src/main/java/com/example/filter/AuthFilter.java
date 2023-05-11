@@ -16,7 +16,7 @@ public class AuthFilter implements Filter {
             throws IOException {
         if (((HttpServletRequest) request).getSession() == null ||
                 ((HttpServletRequest) request).getSession().getAttribute("user") == null) {
-            ((HttpServletResponse) response).sendRedirect("login.jsp");
+            ((HttpServletResponse) response).sendRedirect("/login.jsp");
         }
     }
 }
